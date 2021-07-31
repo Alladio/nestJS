@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { Message } from './message';
 import { MessagesService } from './messages.service';
 
 @Controller('messages')
 export class MessagesController {
-    constructor(private messagesService: MessagesService){}
+    constructor(private messagesService: MessagesService) { }
     //Buscar todos
     @Get()
     findAll() {
@@ -13,21 +13,25 @@ export class MessagesController {
 
     //Buscar por ID
     @Get(':id')
-    findById(@Param() params){
+    findById(@Param() params) {
         return this.messagesService.findById(+params.id);
     }
 
     //Criar
     @Post()
-    create(@Body() message:Message){
-        console.log({message});
+    create(@Body() message: Message) {
+        console.log({ message });
         return this.messagesService.create(message);
     }
 
     //Editar
     @Put(':id')
-    update (@Param() params, @Body() message:Message){
-        console.log({message});
+    update(@Param() params, @Body() message: Message) {
+        console.log({ message });
         return this.messagesService.update(+params.id, message);
+    }
+    @Delete(':id')
+    delete(@Param() params) {
+        return this.messagesService.delete(+params.id)
     }
 }
