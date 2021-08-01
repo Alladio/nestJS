@@ -15,29 +15,36 @@ export class MessagesService {
         }
     ];
     //Simuando um consulta no DB
-    findAll(){
+    findAll() {
         return this.messages;
     }
 
-    findById(id:number){
-        return this.messages.find( (message) => message.id ===id);
+    //async para conseguir usar a função "catch" no "service"
+    async findById(id: number) {
+        const message = this.messages.find((msg) => msg.id === id);
+        
+        if (!message) {
+            throw Error(`Mensagem com o ID ${id} não econtrada`);
+        }
 
-    }
-
-    create(message: Message ){
-        return this.messages.push(message);
-    }
-
-    update(id:number, message: Message){
-        const index = this.messages.findIndex((message) => message.id ===id);
-        this.messages[index]=message;
+        console.log("service ok");
         return message;
     }
 
-    delete(id:number){
-        const index = this.messages.findIndex((message) => message.id ===id);
+    create(message: Message) {
+        return this.messages.push(message);
+    }
+
+    update(id: number, message: Message) {
+        const index = this.messages.findIndex((message) => message.id === id);
+        this.messages[index] = message;
+        return message;
+    }
+
+    delete(id: number) {
+        const index = this.messages.findIndex((message) => message.id === id);
         delete this.messages[index];
-         
+
         return true;
     }
 }

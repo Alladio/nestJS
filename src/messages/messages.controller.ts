@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { Message } from './message';
 import { MessagesService } from './messages.service';
 
@@ -13,8 +13,12 @@ export class MessagesController {
 
     //Buscar por ID
     @Get(':id')
-    findById(@Param() params) {
-        return this.messagesService.findById(+params.id);
+    findById(@Param('id') params) {
+        //PARA USAR O CATCH
+        //NA controller precisa colocar o "async"
+        return this.messagesService.findById(+params.id).catch((e) => {
+            throw new NotFoundException(e.message);
+        });
     }
 
     //Criar
@@ -26,12 +30,12 @@ export class MessagesController {
 
     //Editar
     @Put(':id')
-    update(@Param() params, @Body() message: Message) {
+    update(@Param('id') params, @Body() message: Message) {
         console.log({ message });
         return this.messagesService.update(+params.id, message);
     }
     @Delete(':id')
-    delete(@Param() params) {
+    delete(@Param('id') params) {
         return this.messagesService.delete(+params.id)
     }
 }
