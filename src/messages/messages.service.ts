@@ -65,12 +65,7 @@ export class MessagesService {
         const index = this.messages.findIndex((message) => message.id === id);
         
         console.log(index);
-        if (index == 0) {
-
-            throw Error(`Mensagem deletada com sucesso | delete`);
-
-        }
-        else (index < 0) {
+        if (index < 0) {
 
             throw Error(`Mensagem com o ID ${id} não econtrada | delete`);
 
