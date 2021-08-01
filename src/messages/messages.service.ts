@@ -18,20 +18,20 @@ export class MessagesService {
     //Simuando um consulta no DB
     findAll() {
         return this.messages;
-    } 
+    }
 
     //async para conseguir usar a função "  catch" no "service"
     async findById(id: number) {
         const message = this.messages.find(msg => msg.id === id);
 
         if (!message) {
-            throw Error(`Mensagem com o ID ${id} não econtradaaa`);
+            throw Error(`Mensagem com o ID ${id} não econtrada | findById`);
         }
 
         return message;
     }
 
-    create(messageDto: MessageDto) {    
+    create(messageDto: MessageDto) {
 
         const id = this.messages.length + 1;
 
@@ -43,13 +43,13 @@ export class MessagesService {
         return message;
     }
 
-    update(id: number, messageDto: MessageDto) {
+    async update(id: number, messageDto: MessageDto) {
         const index = this.messages.findIndex((message) => message.id === id);
 
-        //console.log({index})
-        if (index <= 0) {
+        console.log({ index })
+        if (index < 0) {
 
-            throw Error(`Mensagem com o ID ${id} não econtradaa`);
+            throw Error(`Mensagem com o ID ${id} não econtrada | update`);
 
         }
 
@@ -61,10 +61,21 @@ export class MessagesService {
         return messageDto;
     }
 
-    delete(id: number) {
+    async delete(id: number) {
         const index = this.messages.findIndex((message) => message.id === id);
-        delete this.messages[index];
+        
+        console.log(index);
+        if (index == 0) {
 
-        return true;
+            throw Error(`Mensagem deletada com sucesso | delete`);
+
+        }
+        else (index < 0) {
+
+            throw Error(`Mensagem com o ID ${id} não econtrada | delete`);
+
+        }
+
+        delete this.messages[index];
     }
 }
