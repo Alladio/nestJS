@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Message } from './message';
+import { MessageDto } from './MessageDto';
 
 @Injectable()
 export class MessagesService {
@@ -17,28 +18,47 @@ export class MessagesService {
     //Simuando um consulta no DB
     findAll() {
         return this.messages;
-    }
+    } 
 
-    //async para conseguir usar a função "catch" no "service"
+    //async para conseguir usar a função "  catch" no "service"
     async findById(id: number) {
-        const message = this.messages.find((msg) => msg.id === id);
-        
+        const message = this.messages.find(msg => msg.id === id);
+
         if (!message) {
-            throw Error(`Mensagem com o ID ${id} não econtrada`);
+            throw Error(`Mensagem com o ID ${id} não econtradaaa`);
         }
 
-        console.log("service ok");
         return message;
     }
 
-    create(message: Message) {
-        return this.messages.push(message);
+    create(messageDto: MessageDto) {    
+
+        const id = this.messages.length + 1;
+
+        const message: Message = {
+            id,
+            ...messageDto
+        };
+        this.messages.push(message);
+        return message;
     }
 
-    update(id: number, message: Message) {
+    update(id: number, messageDto: MessageDto) {
         const index = this.messages.findIndex((message) => message.id === id);
+
+        //console.log({index})
+        if (index <= 0) {
+
+            throw Error(`Mensagem com o ID ${id} não econtradaa`);
+
+        }
+
+        const message: Message = {
+            id,
+            ...messageDto
+        };
         this.messages[index] = message;
-        return message;
+        return messageDto;
     }
 
     delete(id: number) {
