@@ -5,6 +5,7 @@ export class MessageDto {
 
     @IsString()
     @IsNotEmpty()
+    
 
     text: string;
 }
